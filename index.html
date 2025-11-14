@@ -1,0 +1,2822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes - Professional Note Taking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #000000;
+            --primary-dark: #1a1a1a;
+            --primary-light: #333333;
+            --accent: #666666;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e8e8e8;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --border: #d0d0d0;
+            --border-light: #e8e8e8;
+            --success: #000000;
+            --danger: #000000;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .nav-section {
+            padding: 16px 12px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 8px 12px;
+            margin-bottom: 4px;
+        }
+
+        .nav-button {
+            width: 100%;
+            padding: 10px 12px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+            position: relative;
+        }
+
+        .nav-button > span {
+            flex: 1;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .nav-button i {
+            width: 20px;
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .nav-button:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-button.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-button.active i {
+            color: white;
+        }
+
+        .add-tab-btn {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.15s ease;
+            margin-top: 8px;
+        }
+
+        .add-tab-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-tab-actions {
+            display: flex;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .header-tab-action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+
+        .header-tab-action-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .header-tab-action-btn:first-child:hover {
+            color: #f59e0b;
+        }
+
+        .header-tab-action-btn.pinned {
+            color: #f59e0b;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .header-title h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .add-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .add-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sections Grid */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .section-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .section-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            flex: 1;
+            margin-right: 12px;
+            line-height: 1.4;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .section-card:hover .section-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.15s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .action-btn.view {
+            color: var(--primary);
+        }
+
+        .action-btn.edit {
+            color: var(--success);
+        }
+
+        .action-btn.delete {
+            color: var(--danger);
+        }
+
+        /* Task Page Styles */
+        .task-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .task-input-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .task-input-wrapper {
+            display: flex;
+            gap: 12px;
+        }
+
+        .task-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: all 0.2s ease;
+        }
+
+        .task-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .task-add-btn {
+            padding: 12px 24px;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .task-add-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .task-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .task-item.completed {
+            opacity: 0.6;
+        }
+
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .task-checkbox:hover {
+            border-color: var(--primary);
+        }
+
+        .task-checkbox.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .task-checkbox.checked i {
+            color: white;
+            font-size: 14px;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 15px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-delete-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .task-delete-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--danger);
+        }
+
+        .task-stats {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+        }
+
+        .task-stat {
+            text-align: center;
+        }
+
+        .task-stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .task-stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            white-space: pre-wrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--text-muted);
+            font-size: 32px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 18px;
+            transition: all 0.15s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 200px;
+            line-height: 1.6;
+        }
+
+        /* Pin Icon Styles */
+        .pin-icon {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .pin-icon.pinned {
+            color: #f59e0b;
+            transform: rotate(45deg);
+        }
+
+        .pin-icon:hover {
+            color: #f59e0b;
+            transform: scale(1.2);
+        }
+
+        .section-card {
+            position: relative;
+        }
+
+        /* Priority Badge Styles */
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .priority-low {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .priority-none {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+
+        /* Task Priority Dropdown */
+        .task-priority-select {
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .task-priority-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Timeline/Due Date Styles */
+        .task-timeline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .task-timeline.overdue {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .task-timeline.due-soon {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .timeline-input {
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            cursor: pointer;
+        }
+
+        .timeline-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Tab Management - Pinned indicator */
+        .nav-button.pinned {
+            order: -1;
+        }
+
+        .nav-button.pinned::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: #f59e0b;
+            border-radius: 0 2px 2px 0;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .view-modal .modal-content {
+            max-width: 800px;
+        }
+
+        .view-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .view-content {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            word-wrap: break-word;
+        }
+        
+        .view-content > *:not(table):not(ul):not(ol) {
+            white-space: pre-wrap;
+        }
+        
+        .view-content ul,
+        .view-content ol,
+        .section-content ul,
+        .section-content ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+        
+        .view-content li,
+        .section-content li {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+        
+        .view-content ul {
+            list-style-type: disc;
+        }
+        
+        .view-content ol {
+            list-style-type: decimal;
+        }
+
+        /* Save Status */
+        .save-status {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .save-status i {
+            color: var(--success);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Table Builder Styles */
+        .content-toolbar {
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .toolbar-btn i {
+            font-size: 14px;
+        }
+
+        .table-builder-controls {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .table-builder-controls .form-group {
+            margin-bottom: 0;
+            flex: 0 0 100px;
+        }
+
+        .table-builder-controls .form-group input {
+            padding: 10px 12px;
+        }
+
+        .table-preview {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 300px;
+            max-height: 400px;
+            overflow: auto;
+        }
+
+        .table-scroll-container {
+            overflow: auto;
+            max-width: 100%;
+        }
+
+        .editable-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .editable-table th,
+        .editable-table td {
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            text-align: left;
+            min-width: 100px;
+        }
+
+        .editable-table th {
+            background: var(--bg-tertiary);
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .editable-table td {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .editable-table td input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+        }
+
+        .editable-table td input:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
+            background: #fef9e7;
+        }
+
+        .editable-table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .editable-table tr:hover {
+            background: #f0f9ff;
+        }
+
+        /* Display tables in content */
+        .view-content table,
+        .section-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            box-shadow: var(--shadow-sm);
+            background: white;
+        }
+
+        .view-content table th,
+        .view-content table td,
+        .section-content table th,
+        .section-content table td {
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        .view-content table th,
+        .section-content table th {
+            background: var(--bg-tertiary);
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .view-content table tr:nth-child(even),
+        .section-content table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .view-content table tr:hover,
+        .section-content table tr:hover {
+            background: #f0f9ff;
+        }
+
+        /* Quiz Styles */
+        .quiz-home {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .quiz-header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .quiz-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 36px;
+        }
+
+        .quiz-main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .quiz-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .quiz-modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .quiz-module-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-module-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quiz-all-modules {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .quiz-all-modules:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .quiz-all-modules h3,
+        .quiz-all-modules p {
+            color: white;
+        }
+
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .quiz-all-modules .module-icon {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .quiz-module-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .quiz-module-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .module-questions {
+            display: inline-block;
+            padding: 6px 14px;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .quiz-all-modules .module-questions {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .quiz-stats-section {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-stat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .quiz-stat i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        /* Quiz Question Styles */
+        .quiz-question-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .quiz-progress-bar {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .quiz-back-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-back-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .quiz-question-counter {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .quiz-content {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .quiz-question-type-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        .quiz-question-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .quiz-instruction {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .quiz-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: var(--bg-primary);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .quiz-option input[type="radio"],
+        .quiz-option input[type="checkbox"] {
+            margin-right: 14px;
+            cursor: pointer;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .quiz-nav-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-prev-btn {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .quiz-prev-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .quiz-next-btn {
+            background: var(--primary);
+            color: white;
+            margin-left: auto;
+        }
+
+        .quiz-next-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Quiz Results */
+        .quiz-results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .quiz-results-header {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .quiz-results-header.good {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .quiz-results-header.needs-improvement {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .results-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+
+        .results-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .results-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .quiz-results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .result-stat-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quiz-results-details {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-results-details h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .quiz-review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .quiz-review-item {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .quiz-review-item.correct {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .quiz-review-item.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .review-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .review-question-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .review-status-icon {
+            font-size: 20px;
+        }
+
+        .quiz-review-item.correct .review-status-icon {
+            color: #10b981;
+        }
+
+        .quiz-review-item.incorrect .review-status-icon {
+            color: #ef4444;
+        }
+
+        .review-question-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .review-answers {
+            margin-bottom: 16px;
+        }
+
+        .review-answer {
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .review-answer.correct {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .review-answer.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .review-explanation {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #78350f;
+        }
+
+        .review-explanation strong {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #92400e;
+        }
+
+        .review-explanation p {
+            margin: 0;
+        }
+
+        .quiz-results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-action-btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-action-btn.secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .quiz-action-btn.secondary:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .quiz-action-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .quiz-action-btn.primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .logo {
+                padding: 16px;
+                border-bottom: none;
+                border-right: 1px solid var(--border);
+            }
+
+            .nav-section {
+                display: flex;
+                padding: 16px;
+                overflow-x: auto;
+            }
+
+            .nav-label {
+                display: none;
+            }
+
+            .nav-button span {
+                display: none;
+            }
+
+            .header {
+                padding: 16px 20px;
+            }
+
+            .header-title h2 {
+                font-size: 20px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-content">
+                    <div class="logo-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Notes</h1>
+                        <p>Technical Docs</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="nav-section">
+                <div class="nav-label">Categories</div>
+                <button class="nav-button active" data-tab="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Tasks</span>
+                </button>
+                <button class="nav-button" data-tab="storage">
+                    <i class="fas fa-database"></i>
+                    <span>Storage</span>
+                </button>
+                <button class="nav-button" data-tab="ecs">
+                    <i class="fas fa-server"></i>
+                    <span>ECS</span>
+                </button>
+                <button class="nav-button" data-tab="database">
+                    <i class="fas fa-table"></i>
+                    <span>Database</span>
+                </button>
+                <button class="nav-button" data-tab="network">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Network</span>
+                </button>
+                <button class="nav-button" data-tab="quiz">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Quiz</span>
+                </button>
+                <div id="customTabsContainer"></div>
+                <button class="add-tab-btn" id="addTabBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Tab</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="header-title">
+                        <div class="header-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h2 id="currentTabTitle">Tasks</h2>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-tab-actions" id="headerTabActions" style="display: none;">
+                        <button class="header-tab-action-btn" id="headerPinBtn" title="Pin tab">
+                            <i class="fas fa-thumbtack"></i>
+                        </button>
+                        <button class="header-tab-action-btn" id="headerEditBtn" title="Edit tab name">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="header-tab-action-btn" id="headerDeleteBtn" title="Delete tab">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <button class="add-btn" id="addSectionBtn">
+                        <i class="fas fa-plus"></i>
+                        <span id="addBtnText">New Task</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <div class="tab-content active" id="tasks">
+                    <div class="task-container">
+                        <div class="task-stats">
+                            <div class="task-stat">
+                                <div class="task-stat-number" id="totalTasks">0</div>
+                                <div class="task-stat-label">Total</div>
+                            </div>
+                            <div class="task-stat">
+                                <div class="task-stat-number" id="activeTasks">0</div>
+                                <div class="task-stat-label">Active</div>
+                            </div>
+                            <div class="task-stat">
+                                <div class="task-stat-number" id="completedTasks">0</div>
+                                <div class="task-stat-label">Completed</div>
+                            </div>
+                        </div>
+                        <div class="task-input-section">
+                            <div class="task-input-wrapper">
+                                <input type="text" class="task-input" id="taskInput" placeholder="Add a new task...">
+                                <select class="task-priority-select" id="taskPriority">
+                                    <option value="none">No Priority</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                                <input type="date" class="timeline-input" id="taskTimeline" title="Optional due date">
+                                <button class="task-add-btn" id="addTaskBtn">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tasks-list" id="tasksList"></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="storage">
+                    <div class="sections-grid" id="storage-sections"></div>
+                </div>
+                <div class="tab-content" id="ecs">
+                    <div class="sections-grid" id="ecs-sections"></div>
+                </div>
+                <div class="tab-content" id="database">
+                    <div class="sections-grid" id="database-sections"></div>
+                </div>
+                <div class="tab-content" id="network">
+                    <div class="sections-grid" id="network-sections"></div>
+                </div>
+                <div class="tab-content" id="quiz">
+                    <div id="quiz-container"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="sectionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">New Note</h3>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="sectionTitle">Title</label>
+                    <input type="text" id="sectionTitle" placeholder="Enter note title...">
+                </div>
+                <div class="form-group">
+                    <label for="sectionContent">Content</label>
+                    <div class="content-toolbar">
+                        <button type="button" class="toolbar-btn" id="insertTableBtn" title="Insert Table">
+                            <i class="fas fa-table"></i> Insert Table
+                        </button>
+                        <button type="button" class="toolbar-btn" id="insertBulletListBtn" title="Insert Bullet List">
+                            <i class="fas fa-list-ul"></i> Bullet List
+                        </button>
+                        <button type="button" class="toolbar-btn" id="insertNumberListBtn" title="Insert Numbered List">
+                            <i class="fas fa-list-ol"></i> Numbered List
+                        </button>
+                    </div>
+                    <textarea id="sectionContent" placeholder="Write your notes here..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelModal">Cancel</button>
+                <button class="btn btn-primary" id="saveSection">
+                    <i class="fas fa-save"></i>
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Modal -->
+    <div class="modal view-modal" id="viewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Note Details</h3>
+                <button class="close-btn" id="closeViewModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="view-title" id="viewTitle"></div>
+                <div class="view-content" id="viewContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="editFromViewBtn">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn btn-secondary" id="deleteFromViewBtn">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="btn btn-primary" id="closeViewBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Builder Modal -->
+    <div class="modal" id="tableModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Table</h3>
+                <button class="close-btn" id="closeTableModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-builder-controls">
+                    <div class="form-group">
+                        <label>Rows</label>
+                        <input type="number" id="tableRows" min="1" max="20" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label>Columns</label>
+                        <input type="number" id="tableCols" min="1" max="10" value="3">
+                    </div>
+                    <button class="btn btn-secondary" id="generateTableBtn">
+                        <i class="fas fa-sync"></i> Generate Table
+                    </button>
+                </div>
+                <div class="table-preview">
+                    <div class="table-scroll-container">
+                        <table class="editable-table" id="editableTable"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelTableModal">Cancel</button>
+                <button class="btn btn-primary" id="insertTableBtn">
+                    <i class="fas fa-check"></i>
+                    <span>Insert Table</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Status -->
+    <div class="save-status">
+        <i class="fas fa-check-circle"></i>
+        <span>Auto-saved</span>
+    </div>
+
+    <script>
+        let notes = {
+            storage: [],
+            ecs: [],
+            database: [],
+            network: []
+        };
+        let tasks = [];
+        let customTabs = [];
+        let pinnedTabs = [];
+        let currentTab = 'tasks';
+        let editingId = null;
+
+        const tabIcons = {
+            tasks: 'fa-tasks',
+            storage: 'fa-database',
+            ecs: 'fa-server',
+            database: 'fa-table',
+            network: 'fa-network-wired',
+            quiz: 'fa-graduation-cap'
+        };
+
+        // Load data from storage
+        async function loadData() {
+            try {
+                // Load tasks
+                const tasksData = localStorage.getItem('tasks');
+                if (tasksData) {
+                    tasks = JSON.parse(tasksData);
+                }
+                
+                // Load custom tabs
+                const customTabsData = localStorage.getItem('customTabs');
+                if (customTabsData) {
+                    customTabs = JSON.parse(customTabsData);
+                    
+                    // Create DOM elements for custom tabs
+                    const contentArea = document.querySelector('.content-area');
+                    customTabs.forEach(tab => {
+                        // Check if tab content already exists
+                        if (!document.getElementById(tab.id)) {
+                            const newTabContent = document.createElement('div');
+                            newTabContent.className = 'tab-content';
+                            newTabContent.id = tab.id;
+                            newTabContent.innerHTML = `<div class="sections-grid" id="${tab.id}-sections"></div>`;
+                            contentArea.appendChild(newTabContent);
+                        }
+                        
+                        // Set tab icon
+                        tabIcons[tab.id] = 'fa-folder';
+                    });
+                    
+                    renderCustomTabs();
+                }
+                
+                // Load pinned tabs
+                const pinnedTabsData = localStorage.getItem('pinnedTabs');
+                if (pinnedTabsData) {
+                    pinnedTabs = JSON.parse(pinnedTabsData);
+                }
+                
+                // Load notes for each tab
+                for (const tab of ['storage', 'ecs', 'database', 'network']) {
+                    const notesData = localStorage.getItem(`notes-${tab}`);
+                    if (notesData) {
+                        notes[tab] = JSON.parse(notesData);
+                    }
+                }
+                
+                // Load notes for custom tabs
+                customTabs.forEach(tab => {
+                    const notesData = localStorage.getItem(`notes-${tab.id}`);
+                    if (notesData) {
+                        notes[tab.id] = JSON.parse(notesData);
+                    } else {
+                        notes[tab.id] = [];
+                    }
+                });
+                
+                renderAllSections();
+                renderTasks();
+            } catch (error) {
+                console.log('No saved data found');
+            }
+        }
+
+        // Save data to storage
+        async function saveData() {
+            try {
+                for (const tab in notes) {
+                    localStorage.setItem(`notes-${tab}`, JSON.stringify(notes[tab]));
+                }
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                localStorage.setItem('customTabs', JSON.stringify(customTabs));
+                localStorage.setItem('pinnedTabs', JSON.stringify(pinnedTabs));
+            } catch (error) {
+                console.error('Error saving data:', error);
+            }
+        }
+
+        // Tab switching
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                switchTab(tab);
+            });
+        });
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const tabBtn = document.querySelector(`[data-tab="${tab}"]`);
+            if (tabBtn) {
+                tabBtn.classList.add('active');
+            }
+            
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            const tabContent = document.getElementById(tab);
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+            
+            // Update header
+            let title = tab.charAt(0).toUpperCase() + tab.slice(1);
+            const customTab = customTabs.find(t => t.id === tab);
+            if (customTab) {
+                title = customTab.name;
+            }
+            document.getElementById('currentTabTitle').textContent = title;
+            
+            const icon = tabIcons[tab] || 'fa-folder';
+            document.querySelector('.header-icon i').className = `fas ${icon}`;
+            
+            // Update add button text
+            const addBtnText = document.getElementById('addBtnText');
+            if (tab === 'tasks') {
+                addBtnText.textContent = 'New Task';
+                document.getElementById('addSectionBtn').style.display = 'none';
+            } else if (tab === 'quiz') {
+                document.getElementById('addSectionBtn').style.display = 'none';
+            } else {
+                addBtnText.textContent = 'New Note';
+                document.getElementById('addSectionBtn').style.display = 'flex';
+            }
+            
+            // Show/hide header tab actions for custom tabs
+            const headerTabActions = document.getElementById('headerTabActions');
+            const headerPinBtn = document.getElementById('headerPinBtn');
+            
+            if (customTab) {
+                // This is a custom tab, show the actions
+                headerTabActions.style.display = 'flex';
+                
+                // Update pin button state
+                const isPinned = pinnedTabs.includes(tab);
+                if (isPinned) {
+                    headerPinBtn.classList.add('pinned');
+                    headerPinBtn.title = 'Unpin tab';
+                } else {
+                    headerPinBtn.classList.remove('pinned');
+                    headerPinBtn.title = 'Pin tab';
+                }
+            } else {
+                // This is a default tab, hide the actions
+                headerTabActions.style.display = 'none';
+            }
+        }
+
+        // Modal controls
+        document.getElementById('addSectionBtn').addEventListener('click', openModal);
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('cancelModal').addEventListener('click', closeModal);
+        document.getElementById('closeViewModal').addEventListener('click', closeViewModal);
+        document.getElementById('closeViewBtn').addEventListener('click', closeViewModal);
+
+        function openModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'New Note';
+            document.getElementById('sectionTitle').value = '';
+            document.getElementById('sectionContent').value = '';
+            document.getElementById('sectionModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('sectionModal').classList.remove('active');
+            editingId = null;
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        // Save section
+        document.getElementById('saveSection').addEventListener('click', async () => {
+            const title = document.getElementById('sectionTitle').value.trim();
+            const content = document.getElementById('sectionContent').value.trim();
+            
+            if (!title) {
+                alert('Please enter a title');
+                return;
+            }
+            
+            // Ensure notes array exists for currentTab
+            if (!notes[currentTab]) {
+                notes[currentTab] = [];
+            }
+            
+            if (editingId !== null) {
+                const index = notes[currentTab].findIndex(n => n.id === editingId);
+                if (index !== -1) {
+                    notes[currentTab][index] = { ...notes[currentTab][index], title, content };
+                }
+            } else {
+                const newNote = {
+                    id: Date.now(),
+                    title,
+                    content,
+                    createdAt: new Date().toISOString()
+                };
+                notes[currentTab].push(newNote);
+            }
+            
+            await saveData();
+            closeModal();
+            
+            // Ensure we render after modal is closed
+            setTimeout(() => {
+                renderSections(currentTab);
+            }, 100);
+        });
+
+        // Render sections
+        function renderAllSections() {
+            Object.keys(notes).forEach(tab => renderSections(tab));
+        }
+
+        function renderSections(tab) {
+            const container = document.getElementById(`${tab}-sections`);
+            
+            // Check if container exists (important for newly created tabs)
+            if (!container) {
+                console.error(`Container not found for tab: ${tab}`);
+                console.log('Available tabs:', Object.keys(notes));
+                console.log('Looking for container ID:', `${tab}-sections`);
+                return;
+            }
+            
+            // Initialize notes array if it doesn't exist
+            if (!notes[tab]) {
+                notes[tab] = [];
+            }
+            
+            if (notes[tab].length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas ${tabIcons[tab] || 'fa-folder'}"></i>
+                        </div>
+                        <h3>No notes yet</h3>
+                        <p>Create your first note to get started</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const sortedNotes = [...notes[tab]].sort((a, b) => {
+                if (a.pinned && !b.pinned) return -1;
+                if (!a.pinned && b.pinned) return 1;
+                return 0;
+            });
+            
+            container.innerHTML = sortedNotes.map(note => {
+                // Show table and list indicators in preview instead of raw HTML
+                let previewContent = note.content
+                    .replace(/\[TABLE\](.*?)\[\/TABLE\]/gs, '<div style="color: #666; font-style: italic; margin: 8px 0;"><i class="fas fa-table"></i> [Table]</div>')
+                    .replace(/\[BULLET_LIST\](.*?)\[\/BULLET_LIST\]/gs, '<div style="color: #666; font-style: italic; margin: 8px 0;"><i class="fas fa-list-ul"></i> [Bullet List]</div>')
+                    .replace(/\[NUMBER_LIST\](.*?)\[\/NUMBER_LIST\]/gs, '<div style="color: #666; font-style: italic; margin: 8px 0;"><i class="fas fa-list-ol"></i> [Numbered List]</div>');
+                return `
+                    <div class="section-card" onclick="viewNote(${note.id}, '${tab}')">
+                        <i class="fas fa-thumbtack pin-icon ${note.pinned ? 'pinned' : ''}" 
+                           onclick="event.stopPropagation(); toggleNotePin(${note.id}, '${tab}')" 
+                           title="${note.pinned ? 'Unpin' : 'Pin'} note"></i>
+                        <div class="section-header">
+                            <div class="section-title">${escapeHtml(note.title)}</div>
+                            <div class="section-actions">
+                                <button class="action-btn view" onclick="event.stopPropagation(); viewNote(${note.id}, '${tab}')" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit" onclick="event.stopPropagation(); editNote(${note.id}, '${tab}')" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="event.stopPropagation(); deleteNote(${note.id}, '${tab}')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-content">${previewContent}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function viewNote(id, tab) {
+            const note = notes[tab].find(n => n.id === id);
+            document.getElementById('viewTitle').textContent = note.title;
+            // Use innerHTML to render tables and lists, but escape non-formatted content
+            const contentEl = document.getElementById('viewContent');
+            contentEl.innerHTML = formatContentWithTablesAndLists(note.content);
+            
+            // Store current note info for action buttons
+            contentEl.dataset.noteId = id;
+            contentEl.dataset.noteTab = tab;
+            
+            document.getElementById('viewModal').classList.add('active');
+        }
+        
+        function formatContentWithTablesAndLists(content) {
+            // Split content into parts: text, tables, and lists
+            const parts = content.split(/(\[TABLE\].*?\[\/TABLE\]|\[BULLET_LIST\].*?\[\/BULLET_LIST\]|\[NUMBER_LIST\].*?\[\/NUMBER_LIST\])/gs);
+            
+            return parts.map(part => {
+                if (part.startsWith('[TABLE]') && part.endsWith('[/TABLE]')) {
+                    // Extract and return the table HTML
+                    return part.replace('[TABLE]', '').replace('[/TABLE]', '');
+                } else if (part.startsWith('[BULLET_LIST]') && part.endsWith('[/BULLET_LIST]')) {
+                    // Extract and return the bullet list HTML
+                    return part.replace('[BULLET_LIST]', '').replace('[/BULLET_LIST]', '');
+                } else if (part.startsWith('[NUMBER_LIST]') && part.endsWith('[/NUMBER_LIST]')) {
+                    // Extract and return the numbered list HTML
+                    return part.replace('[NUMBER_LIST]', '').replace('[/NUMBER_LIST]', '');
+                } else {
+                    // Escape regular text content
+                    return escapeHtml(part);
+                }
+            }).join('');
+        }
+
+        function editNote(id, tab) {
+            const note = notes[tab].find(n => n.id === id);
+            editingId = id;
+            currentTab = tab;
+            document.getElementById('modalTitle').textContent = 'Edit Note';
+            document.getElementById('sectionTitle').value = note.title;
+            document.getElementById('sectionContent').value = note.content;
+            document.getElementById('sectionModal').classList.add('active');
+        }
+
+        async function deleteNote(id, tab) {
+            if (confirm('Are you sure you want to delete this note?')) {
+                notes[tab] = notes[tab].filter(n => n.id !== id);
+                await saveData();
+                renderSections(tab);
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modals on backdrop click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Task Management Functions
+        function renderTasks() {
+            const tasksList = document.getElementById('tasksList');
+            const totalTasksEl = document.getElementById('totalTasks');
+            const activeTasksEl = document.getElementById('activeTasks');
+            const completedTasksEl = document.getElementById('completedTasks');
+            
+            const completedCount = tasks.filter(t => t.completed).length;
+            const activeCount = tasks.length - completedCount;
+            
+            totalTasksEl.textContent = tasks.length;
+            activeTasksEl.textContent = activeCount;
+            completedTasksEl.textContent = completedCount;
+            
+            if (tasks.length === 0) {
+                tasksList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>No tasks yet</h3>
+                        <p>Add your first task to get started</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const sortedTasks = [...tasks].sort((a, b) => {
+                const priorityOrder = { high: 0, medium: 1, low: 2, none: 3 };
+                return priorityOrder[a.priority || 'none'] - priorityOrder[b.priority || 'none'];
+            });
+            
+            tasksList.innerHTML = sortedTasks.map(task => {
+                let timelineClass = '';
+                let timelineText = '';
+                
+                if (task.dueDate) {
+                    const due = new Date(task.dueDate);
+                    const now = new Date();
+                    const diffDays = Math.ceil((due - now) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays < 0 && !task.completed) {
+                        timelineClass = 'overdue';
+                        timelineText = `Overdue by ${Math.abs(diffDays)} day(s)`;
+                    } else if (diffDays === 0 && !task.completed) {
+                        timelineClass = 'due-soon';
+                        timelineText = 'Due today';
+                    } else if (diffDays === 1 && !task.completed) {
+                        timelineClass = 'due-soon';
+                        timelineText = 'Due tomorrow';
+                    } else if (diffDays > 0 && !task.completed) {
+                        timelineText = `Due in ${diffDays} day(s)`;
+                    } else if (task.completed) {
+                        timelineText = `Due: ${due.toLocaleDateString()}`;
+                    }
+                }
+                
+                const priorityLabel = task.priority && task.priority !== 'none' ? task.priority : '';
+                
+                return `
+                    <div class="task-item ${task.completed ? 'completed' : ''}">
+                        <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})">
+                            ${task.completed ? '<i class="fas fa-check"></i>' : ''}
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="task-text">${escapeHtml(task.text)}</div>
+                            <div class="task-meta">
+                                ${priorityLabel ? `<span class="priority-badge priority-${task.priority}">${priorityLabel}</span>` : ''}
+                                ${timelineText ? `<span class="task-timeline ${timelineClass}"><i class="fas fa-clock"></i> ${timelineText}</span>` : ''}
+                            </div>
+                        </div>
+                        <button class="task-delete-btn" onclick="deleteTask(${task.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const text = input.value.trim();
+            const priority = document.getElementById('taskPriority').value;
+            const dueDate = document.getElementById('taskTimeline').value;
+            
+            if (!text) return;
+            
+            const newTask = {
+                id: Date.now(),
+                text: text,
+                completed: false,
+                priority: priority,
+                dueDate: dueDate || null,
+                createdAt: new Date().toISOString()
+            };
+            
+            tasks.push(newTask);
+            input.value = '';
+            document.getElementById('taskPriority').value = 'none';
+            document.getElementById('taskTimeline').value = '';
+            saveData();
+            renderTasks();
+        }
+        
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                saveData();
+                renderTasks();
+            }
+        }
+        
+        function deleteTask(id) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                tasks = tasks.filter(t => t.id !== id);
+                saveData();
+                renderTasks();
+            }
+        }
+        
+        // Pin/Unpin Note
+        function toggleNotePin(id, tab) {
+            const note = notes[tab].find(n => n.id === id);
+            if (note) {
+                note.pinned = !note.pinned;
+                saveData();
+                renderSections(tab);
+            }
+        }
+        
+        // Custom Tab Management
+        function renderCustomTabs() {
+            const container = document.getElementById('customTabsContainer');
+            const sortedTabs = [...customTabs].sort((a, b) => {
+                const aPinned = pinnedTabs.includes(a.id);
+                const bPinned = pinnedTabs.includes(b.id);
+                if (aPinned && !bPinned) return -1;
+                if (!aPinned && bPinned) return 1;
+                return 0;
+            });
+            
+            container.innerHTML = sortedTabs.map(tab => {
+                const isPinned = pinnedTabs.includes(tab.id);
+                return `
+                    <button class="nav-button ${isPinned ? 'pinned' : ''}" data-tab="${tab.id}">
+                        <i class="fas ${isPinned ? 'fa-thumbtack' : 'fa-folder'}"></i>
+                        <span>${escapeHtml(tab.name)}</span>
+                    </button>
+                `;
+            }).join('');
+            
+            // Re-attach event listeners
+            container.querySelectorAll('.nav-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.dataset.tab;
+                    switchTab(tab);
+                });
+            });
+        }
+        
+        function toggleTabPin(tabId) {
+            const index = pinnedTabs.indexOf(tabId);
+            if (index > -1) {
+                pinnedTabs.splice(index, 1);
+            } else {
+                pinnedTabs.push(tabId);
+            }
+            saveData();
+            renderCustomTabs();
+        }
+        
+        function editTabName(tabId) {
+            const tab = customTabs.find(t => t.id === tabId);
+            if (!tab) return;
+            
+            const newName = prompt('Enter new tab name:', tab.name);
+            if (newName && newName.trim()) {
+                tab.name = newName.trim();
+                saveData();
+                renderCustomTabs();
+                
+                // Update header if this is the current tab
+                if (currentTab === tabId) {
+                    document.getElementById('currentTabTitle').textContent = tab.name;
+                }
+            }
+        }
+        
+        function deleteTab(tabId) {
+            if (!confirm('Are you sure you want to delete this tab and all its notes?')) return;
+            
+            // Remove from custom tabs
+            customTabs = customTabs.filter(t => t.id !== tabId);
+            
+            // Remove from pinned tabs
+            const pinnedIndex = pinnedTabs.indexOf(tabId);
+            if (pinnedIndex > -1) {
+                pinnedTabs.splice(pinnedIndex, 1);
+            }
+            
+            // Remove notes
+            delete notes[tabId];
+            localStorage.removeItem(`notes-${tabId}`);
+            
+            // Remove tab content element
+            const tabContent = document.getElementById(tabId);
+            if (tabContent) {
+                tabContent.remove();
+            }
+            
+            // Switch to tasks tab if deleting current tab
+            if (currentTab === tabId) {
+                switchTab('tasks');
+            }
+            
+            saveData();
+            renderCustomTabs();
+        }
+        
+        function addNewTab() {
+            const tabName = prompt('Enter tab name:');
+            if (!tabName || !tabName.trim()) return;
+            
+            const newTab = {
+                id: 'custom_' + Date.now(),
+                name: tabName.trim()
+            };
+            
+            customTabs.push(newTab);
+            notes[newTab.id] = [];
+            tabIcons[newTab.id] = 'fa-folder';
+            
+            // Create tab content element
+            const contentArea = document.querySelector('.content-area');
+            const newTabContent = document.createElement('div');
+            newTabContent.className = 'tab-content';
+            newTabContent.id = newTab.id;
+            newTabContent.innerHTML = `<div class="sections-grid" id="${newTab.id}-sections"></div>`;
+            contentArea.appendChild(newTabContent);
+            
+            saveData();
+            renderCustomTabs();
+            
+            // Switch to the new tab first, then render
+            switchTab(newTab.id);
+            setTimeout(() => {
+                renderSections(newTab.id);
+            }, 50);
+        }
+        
+        // Table Builder Functions
+        let currentTableData = null;
+        
+        function openTableModal() {
+            document.getElementById('tableModal').classList.add('active');
+            generateTable(); // Generate initial table
+        }
+        
+        function closeTableModal() {
+            document.getElementById('tableModal').classList.remove('active');
+            currentTableData = null;
+        }
+        
+        function generateTable() {
+            const rows = parseInt(document.getElementById('tableRows').value) || 3;
+            const cols = parseInt(document.getElementById('tableCols').value) || 3;
+            
+            const table = document.getElementById('editableTable');
+            table.innerHTML = '';
+            
+            // Create header row
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            for (let c = 0; c < cols; c++) {
+                const th = document.createElement('th');
+                th.contentEditable = true;
+                th.textContent = `Column ${c + 1}`;
+                headerRow.appendChild(th);
+            }
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // Create data rows
+            const tbody = document.createElement('tbody');
+            for (let r = 0; r < rows; r++) {
+                const row = document.createElement('tr');
+                for (let c = 0; c < cols; c++) {
+                    const td = document.createElement('td');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.placeholder = `R${r + 1}C${c + 1}`;
+                    td.appendChild(input);
+                    row.appendChild(td);
+                }
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+        }
+        
+        function captureTableData() {
+            const table = document.getElementById('editableTable');
+            const rows = table.querySelectorAll('tr');
+            
+            let tableHTML = '<table>';
+            
+            // Process each row
+            rows.forEach((row, index) => {
+                tableHTML += '<tr>';
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    if (cell.tagName === 'TH') {
+                        tableHTML += `<th>${escapeHtml(cell.textContent.trim())}</th>`;
+                    } else {
+                        const input = cell.querySelector('input');
+                        const value = input ? input.value.trim() : cell.textContent.trim();
+                        tableHTML += `<td>${escapeHtml(value)}</td>`;
+                    }
+                });
+                tableHTML += '</tr>';
+            });
+            
+            tableHTML += '</table>';
+            return tableHTML;
+        }
+        
+        function insertTableIntoContent() {
+            const tableHTML = captureTableData();
+            const contentTextarea = document.getElementById('sectionContent');
+            const cursorPos = contentTextarea.selectionStart;
+            const textBefore = contentTextarea.value.substring(0, cursorPos);
+            const textAfter = contentTextarea.value.substring(cursorPos);
+            
+            // Insert table with markers
+            const tableMarker = `\n[TABLE]${tableHTML}[/TABLE]\n`;
+            contentTextarea.value = textBefore + tableMarker + textAfter;
+            
+            // Close table modal
+            closeTableModal();
+        }
+        
+        // List Builder Functions
+        function insertBulletList() {
+            const contentTextarea = document.getElementById('sectionContent');
+            const cursorPos = contentTextarea.selectionStart;
+            const textBefore = contentTextarea.value.substring(0, cursorPos);
+            const textAfter = contentTextarea.value.substring(cursorPos);
+            
+            const listHTML = '<ul>\n<li>Item 1</li>\n<li>Item 2</li>\n<li>Item 3</li>\n</ul>';
+            const listMarker = `\n[BULLET_LIST]${listHTML}[/BULLET_LIST]\n`;
+            contentTextarea.value = textBefore + listMarker + textAfter;
+            
+            // Move cursor to the end of the inserted list
+            contentTextarea.selectionStart = contentTextarea.selectionEnd = cursorPos + listMarker.length;
+            contentTextarea.focus();
+        }
+        
+        function insertNumberList() {
+            const contentTextarea = document.getElementById('sectionContent');
+            const cursorPos = contentTextarea.selectionStart;
+            const textBefore = contentTextarea.value.substring(0, cursorPos);
+            const textAfter = contentTextarea.value.substring(cursorPos);
+            
+            const listHTML = '<ol>\n<li>Item 1</li>\n<li>Item 2</li>\n<li>Item 3</li>\n</ol>';
+            const listMarker = `\n[NUMBER_LIST]${listHTML}[/NUMBER_LIST]\n`;
+            contentTextarea.value = textBefore + listMarker + textAfter;
+            
+            // Move cursor to the end of the inserted list
+            contentTextarea.selectionStart = contentTextarea.selectionEnd = cursorPos + listMarker.length;
+            contentTextarea.focus();
+        }
+        
+        // Event Listeners for Table Builder
+        document.querySelector('#insertTableBtn[title="Insert Table"]').addEventListener('click', openTableModal);
+        document.getElementById('closeTableModal').addEventListener('click', closeTableModal);
+        document.getElementById('cancelTableModal').addEventListener('click', closeTableModal);
+        document.getElementById('generateTableBtn').addEventListener('click', generateTable);
+        document.getElementById('insertTableBtn').addEventListener('click', insertTableIntoContent);
+        
+        // Event Listeners for List Buttons
+        document.getElementById('insertBulletListBtn').addEventListener('click', insertBulletList);
+        document.getElementById('insertNumberListBtn').addEventListener('click', insertNumberList);
+        
+        // Close table modal on backdrop click
+        document.getElementById('tableModal').addEventListener('click', (e) => {
+            if (e.target.id === 'tableModal') {
+                closeTableModal();
+            }
+        });
+
+        // Event Listeners
+        document.getElementById('addTaskBtn').addEventListener('click', addTask);
+        document.getElementById('taskInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+        
+        document.getElementById('addTabBtn').addEventListener('click', addNewTab);
+        
+        // Header tab action button event listeners
+        document.getElementById('headerPinBtn').addEventListener('click', () => {
+            if (currentTab && customTabs.find(t => t.id === currentTab)) {
+                toggleTabPin(currentTab);
+            }
+        });
+        
+        document.getElementById('headerEditBtn').addEventListener('click', () => {
+            if (currentTab && customTabs.find(t => t.id === currentTab)) {
+                editTabName(currentTab);
+            }
+        });
+        
+        document.getElementById('headerDeleteBtn').addEventListener('click', () => {
+            if (currentTab && customTabs.find(t => t.id === currentTab)) {
+                deleteTab(currentTab);
+            }
+        });
+        
+        // View modal action button event listeners
+        document.getElementById('editFromViewBtn').addEventListener('click', () => {
+            const contentEl = document.getElementById('viewContent');
+            const noteId = parseInt(contentEl.dataset.noteId);
+            const noteTab = contentEl.dataset.noteTab;
+            closeViewModal();
+            editNote(noteId, noteTab);
+        });
+        
+        document.getElementById('deleteFromViewBtn').addEventListener('click', async () => {
+            const contentEl = document.getElementById('viewContent');
+            const noteId = parseInt(contentEl.dataset.noteId);
+            const noteTab = contentEl.dataset.noteTab;
+            closeViewModal();
+            await deleteNote(noteId, noteTab);
+        });
+        
+        // Initialize
+        loadData();
+    </script>
+    
+    <!-- Quiz Scripts -->
+    <script src="quiz.js"></script>
+    <script src="quiz-questions.js"></script>
+    <script src="scenario-questions.js"></script>
+    <script src="scenario-questions2.js"></script>
+</body>
+</html>
