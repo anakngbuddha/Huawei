@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huawei Cloud Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #fff;
+        }
+
+        .quiz-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 5px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item span {
+            display: block;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .info-item strong {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-number {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .scenario {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #fff;
+            font-style: italic;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .options {
+            margin: 20px 0;
+        }
+
+        .option {
+            background: #1a1a1a;
+            border: 2px solid #666;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: #2a2a2a;
+            border-color: #fff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .option.correct {
+            background: #28a745;
+            color: #fff;
+            border-color: #28a745;
+        }
+
+        .option.incorrect {
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #fff;
+        }
+
+        .btn {
+            background: #fff;
+            color: #000;
+            border: 2px solid #fff;
+            padding: 12px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn:disabled {
+            background: #666;
+            color: #ccc;
+            border-color: #666;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            margin: 30px 0;
+            padding: 30px;
+            background: #000;
+            border: 3px solid #fff;
+            border-radius: 10px;
+        }
+
+        .score-message {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #000;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 20px;
+            }
+
+            .quiz-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .quiz-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Huawei Cloud Services Quiz</h1>
+            <p>Scenario-Based Assessment</p>
+            <div class="quiz-info">
+                <div class="info-item">
+                    <span>Question</span>
+                    <strong id="currentQ">1</strong> / <strong id="totalQ">30</strong>
+                </div>
+                <div class="info-item">
+                    <span>Score</span>
+                    <strong id="score">0</strong>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div id="quizContent"></div>
+
+        <div class="results" id="results">
+            <h2>Quiz Completed!</h2>
+            <div class="score-display">
+                <div id="finalScore"></div>
+            </div>
+            <p class="score-message" id="scoreMessage"></p>
+            <button class="btn" onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                scenario: "Your company is migrating to Huawei Cloud and needs to ensure proper access control for different teams. The development team needs full access to ECS and OBS, while the testing team only needs read access to these services.",
+                question: "Which Huawei Cloud service should you use to manage these permissions effectively?",
+                options: [
+                    "IAM + User Groups + Policies",
+                    "DEW + KMS + CSMS",
+                    "CTS + LTS + OBS",
+                    "VPC + Security Groups + Network ACL"
+                ],
+                correct: 0
+            },
+            {
+                scenario: "A Python application running on an ECS needs to access data stored in OBS buckets. You want to avoid storing credentials directly on the ECS for security reasons.",
+                question: "What is the recommended approach to grant the application access to OBS?",
+                options: [
+                    "Store AK/SK in the application code",
+                    "Create an IAM agency + Assign OBS permissions + Associate with ECS",
+                    "Use console username and password",
+                    "Create a new IAM user for each ECS"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your organization needs to track who deleted a critical ECS instance last night. You need to determine which IAM user performed this action and when.",
+                question: "Which service would help you investigate this incident?",
+                options: [
+                    "Cloud Eye + CES",
+                    "DEW + KMS",
+                    "CTS + LTS + OBS",
+                    "IAM + Security Groups"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "You need to securely store database passwords and API keys used by your applications. The secrets should be centrally managed and accessed without hardcoding them in configuration files.",
+                question: "Which DEW component should you use for this requirement?",
+                options: [
+                    "KMS + Data Keys",
+                    "CSMS + IAM Agency",
+                    "EVS Encryption",
+                    "OBS Server-side Encryption"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your application needs to encrypt sensitive customer data before storing it. You want to use envelope encryption where data keys are encrypted by a master key that never leaves the encryption service.",
+                question: "Which combination provides this security architecture?",
+                options: [
+                    "OBS + Bucket Policies",
+                    "EVS + Snapshots",
+                    "DEW + KMS + CMK + Data Keys",
+                    "IAM + Access Keys"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "You're building an e-commerce platform that requires a relational database with automatic backups, point-in-time recovery, and the ability to scale read operations during peak shopping hours.",
+                question: "Which database service configuration would best meet these requirements?",
+                options: [
+                    "GeminiDB + Cassandra API",
+                    "RDS Primary/Standby + Read Replicas + Automated Backups",
+                    "DDS + MongoDB Engine",
+                    "Local Disk + Manual Backups"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your application experiences high read traffic and you need to distribute database read requests across multiple nodes while maintaining a single endpoint for the application to connect to.",
+                question: "Which RDS feature should you implement?",
+                options: [
+                    "Primary/Standby HA",
+                    "Automated Backup + PITR",
+                    "Read/Write Splitting + Read Replicas",
+                    "Cross-AZ Deployment"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "You need a database solution that can scale to handle petabytes of data with 1000+ nodes for a big data analytics platform processing massive amounts of structured data.",
+                question: "Which database service is designed for this scale?",
+                options: [
+                    "RDS for MySQL",
+                    "TaurusDB",
+                    "GaussDB (Distributed)",
+                    "DDS"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "Your NoSQL application requires millisecond-level response times regardless of data volume, needs to handle massive concurrent requests, and stores semi-structured documents.",
+                question: "Which database type and service would be most appropriate?",
+                options: [
+                    "RDS for PostgreSQL",
+                    "GeminiDB + Mongo API",
+                    "TaurusDB + MySQL Compatible",
+                    "EVS + Local Storage"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "You need to ensure zero data loss and fast failover (within seconds) for a mission-critical database. The database should maintain three copies of data and support cross-AZ deployment.",
+                question: "Which database service provides these reliability features?",
+                options: [
+                    "RDS Single Instance",
+                    "TaurusDB + DFV Storage + RDMA",
+                    "GeminiDB Basic",
+                    "Self-managed MySQL on ECS"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Two ECS instances in the same VPC cannot communicate with each other, despite being configured with private IP addresses in the same subnet.",
+                question: "What is the most likely cause and solution?",
+                options: [
+                    "VPC CIDR block conflict - Create new VPC",
+                    "Security Group rules blocking traffic - Update inbound/outbound rules",
+                    "NAT Gateway misconfiguration - Add SNAT rule",
+                    "Missing EIP - Bind EIPs to both ECS"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your company has a production VPC and a testing VPC in the same region. You need to enable private communication between resources in both VPCs without using the Internet.",
+                question: "What is the most cost-effective solution?",
+                options: [
+                    "Assign EIPs + Internet Gateway",
+                    "VPC Peering Connection + Route Configuration",
+                    "NAT Gateway + DNAT Rules",
+                    "VPN Connection + Customer Gateway"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "You need to allow multiple ECS instances in a private subnet to access the Internet for software updates, but they should not be directly accessible from the Internet.",
+                question: "Which combination provides this capability?",
+                options: [
+                    "EIP + Bind to each ECS",
+                    "VPC Peering + Internet Gateway",
+                    "Public NAT Gateway + SNAT Rule + EIP",
+                    "Security Group + Outbound Rules Only"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "Your web application runs on ECS instances in a private subnet. You need to expose a specific service on port 80 to the Internet using a single public IP address.",
+                question: "Which NAT Gateway configuration should you use?",
+                options: [
+                    "SNAT Rule + Port Mapping",
+                    "DNAT Rule + EIP + Port Mapping (80 → Private IP:80)",
+                    "VPC Peering + Route Table",
+                    "Network ACL + Inbound Rules"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "You need to implement network security with different protection levels: instance-level filtering for specific applications and subnet-level filtering for broad network segments.",
+                question: "Which combination provides layered network security?",
+                options: [
+                    "IAM Policies + Bucket Policies",
+                    "Security Groups (Instance) + Network ACL (Subnet)",
+                    "EIP + NAT Gateway",
+                    "VPC Peering + Route Tables"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "You need to store large video files (up to 48 TB per file) that will be accessed by users worldwide. The storage should be highly durable with 12 nines reliability and support direct Internet access.",
+                question: "Which storage service meets these requirements?",
+                options: [
+                    "EVS + Attached to ECS",
+                    "OBS + Bucket + Internet Access",
+                    "SFS + NFS Protocol",
+                    "Local Disk + Instance Storage"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your application has different data access patterns: frequently accessed data needs fast retrieval, while regulatory documents accessed once a year must be retained but can tolerate restore delays.",
+                question: "Which OBS configuration optimizes costs while meeting requirements?",
+                options: [
+                    "All data in OBS Standard",
+                    "OBS Standard (Hot) + Lifecycle Policy → Infrequent Access → Archive (Cold)",
+                    "EVS + Snapshots + OBS Backup",
+                    "SFS + Multiple File Systems"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "An EVS disk containing critical database data was accidentally deleted. You need to recover the data as quickly as possible to minimize downtime.",
+                question: "Which EVS feature enables the fastest recovery?",
+                options: [
+                    "Three-copy Redundancy (automatic)",
+                    "EVS Snapshots + Restore",
+                    "OBS Backup + Download + Restore",
+                    "Create new disk + Replication"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your high-performance computing application requires the absolute lowest latency and highest IOPS for temporary processing data that doesn't need to survive instance restarts.",
+                question: "Which storage option provides optimal performance for this use case?",
+                options: [
+                    "EVS + High I/O",
+                    "OBS + Standard Storage",
+                    "ECS Local Disk (i3/d6 instances)",
+                    "SFS + Turbo"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "Multiple ECS instances need simultaneous read/write access to shared files using standard file protocols. The storage should automatically scale and provide high bandwidth.",
+                question: "Which service should you implement?",
+                options: [
+                    "EVS + Attach to multiple ECS",
+                    "OBS + SDK Access",
+                    "SFS + NFS/CIFS Protocol + Same VPC",
+                    "Local Disk + Replication"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "You're designing a three-tier web architecture with web servers, application servers, and a database. Traffic should be distributed across web servers, and database should have high availability with automatic failover.",
+                question: "Which architecture provides the best availability and scalability?",
+                options: [
+                    "ECS + ELB + RDS Primary/Standby Across AZs",
+                    "ECS + EIP + Single RDS Instance",
+                    "ECS + NAT Gateway + DDS Single Node",
+                    "BMS + VPC Peering + Local Database"
+                ],
+                correct: 0
+            },
+            {
+                scenario: "Your application handles sensitive healthcare data. You need encryption at rest, encryption in transit, access auditing, and fine-grained access control with compliance certifications.",
+                question: "Which combination provides comprehensive security compliance?",
+                options: [
+                    "VPC + Security Groups",
+                    "IAM + Policies + DEW + KMS + CTS + Encryption",
+                    "EIP + NAT Gateway + Network ACL",
+                    "OBS + Bucket Policies Only"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "You need to enable version control for critical configuration files in OBS to protect against accidental modifications or deletions, with the ability to restore previous versions.",
+                question: "Which OBS feature should you enable?",
+                options: [
+                    "Bucket Policies + ACL",
+                    "OBS Versioning + Delete Markers",
+                    "Lifecycle Management + Archive",
+                    "Cross-Region Replication"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your database-driven application needs to handle complex SQL queries, transactions with ACID compliance, and maintain strong consistency across related data tables.",
+                question: "Which database type and service is most appropriate?",
+                options: [
+                    "Non-Relational + GeminiDB",
+                    "Relational + RDS for MySQL + ACID Support",
+                    "Object Storage + OBS",
+                    "Cache + Redis API"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "You're building a gaming platform that needs to store player profiles with flexible schema, handle millions of concurrent reads/writes, and scale horizontally with eventual consistency acceptable.",
+                question: "Which database solution fits this use case?",
+                options: [
+                    "RDS for SQL Server + Read Replicas",
+                    "GeminiDB + Redis/Cassandra API + Distributed Storage",
+                    "TaurusDB + MySQL Compatible",
+                    "EVS + File Storage"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your on-premises data center needs to connect to Huawei Cloud VPC with a secure, private connection for hybrid cloud deployment. Resources in both locations must communicate seamlessly.",
+                question: "Which connectivity solution should you implement?",
+                options: [
+                    "VPC Peering Connection",
+                    "EIP + Public Internet",
+                    "VPN Gateway + Direct Connect",
+                    "NAT Gateway + DNAT"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "You need to implement a defense-in-depth security strategy for your VPC with multiple protection layers: subnet-level filtering, instance-level filtering, and application-level access control.",
+                question: "Which layered approach provides comprehensive protection?",
+                options: [
+                    "Security Groups + EIP Only",
+                    "Network ACL (Subnet) + Security Groups (Instance) + IAM (Application)",
+                    "VPC Peering + Route Tables",
+                    "NAT Gateway + Single Security Group"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "Your RDS database needs point-in-time recovery capability to restore data to any moment within the last 7 days, including the ability to recover from logical errors or data corruption.",
+                question: "Which RDS backup configuration enables this capability?",
+                options: [
+                    "Manual Full Backups Only",
+                    "Automated Backup + Binlog Backup + PITR",
+                    "Snapshots Every 24 Hours",
+                    "Three-copy Redundancy"
+                ],
+                correct: 1
+            },
+            {
+                scenario: "You need to manage and query your cloud databases through a web console without installing client software, perform SQL operations, analyze slow queries, and get performance recommendations.",
+                question: "Which service provides these database management capabilities?",
+                options: [
+                    "CTS + Cloud Trace",
+                    "IAM + Access Keys",
+                    "DAS + Web Console + Performance Analysis",
+                    "OBS + Database Backups"
+                ],
+                correct: 2
+            },
+            {
+                scenario: "Your startup is designing a cloud architecture that must handle unpredictable traffic spikes, minimize operational overhead, optimize costs, and maintain high availability across multiple availability zones.",
+                question: "Which architectural pattern best addresses these requirements?",
+                options: [
+                    "Single AZ + Fixed Capacity + Manual Scaling",
+                    "Multi-AZ + ELB + Auto Scaling + RDS HA + OBS Storage + NAT Gateway",
+                    "On-premises Servers + VPN",
+                    "Single ECS + Local Storage + Public IP"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+
+        function initQuiz() {
+            document.getElementById('totalQ').textContent = quizData.length;
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const quizContent = document.getElementById('quizContent');
+            const question = quizData[currentQuestion];
+            
+            quizContent.innerHTML = `
+                <div class="question-container active">
+                    <div class="question-number">Question ${currentQuestion + 1} of ${quizData.length}</div>
+                    <div class="scenario">${question.scenario}</div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectOption(${index})">
+                                ${String.fromCharCode(65 + index)}. ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="navigation">
+                        <button class="btn" onclick="previousQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>
+                            Previous
+                        </button>
+                        <button class="btn" onclick="nextQuestion()" id="nextBtn" disabled>
+                            ${currentQuestion === quizData.length - 1 ? 'Submit' : 'Next'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            updateProgress();
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            
+            if (userAnswers[currentQuestion] !== undefined) {
+                const options = document.querySelectorAll('.option');
+                options[userAnswers[currentQuestion]].classList.add('selected');
+                document.getElementById('nextBtn').disabled = false;
+            }
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[index].classList.add('selected');
+            
+            userAnswers[currentQuestion] = index;
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestion] === undefined) {
+                alert('Please select an answer before proceeding.');
+                return;
+            }
+
+            if (currentQuestion === quizData.length - 1) {
+                finishQuiz();
+            } else {
+                currentQuestion++;
+                displayQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function finishQuiz() {
+            score = 0;
+            for (let i = 0; i < quizData.length; i++) {
+                if (userAnswers[i] === quizData[i].correct) {
+                    score++;
+                }
+            }
+
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('results').classList.add('active');
+            
+            const percentage = (score / quizData.length * 100).toFixed(1);
+            document.getElementById('finalScore').innerHTML = `${score} / ${quizData.length}<br><span style="font-size: 1.5rem;">(${percentage}%)</span>`;
+            
+            let message = '';
+            if (percentage >= 90) {
+                message = 'Outstanding! You have excellent knowledge of Huawei Cloud services! 🎉';
+            } else if (percentage >= 75) {
+                message = 'Great job! You have a solid understanding of Huawei Cloud! 👍';
+            } else if (percentage >= 60) {
+                message = 'Good effort! Keep learning to improve your cloud skills! 📚';
+            } else {
+                message = 'Keep practicing! Review the materials and try again! 💪';
+            }
+            
+            document.getElementById('scoreMessage').textContent = message;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('quizContent').style.display = 'block';
+            document.getElementById('score').textContent = '0';
+            initQuiz();
+        }
+
+        initQuiz();
+    </script>
+</body>
+</html>

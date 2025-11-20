@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Links - Professional Learning Resources</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #000000;
+            --primary-dark: #1a1a1a;
+            --primary-light: #333333;
+            --accent: #666666;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e8e8e8;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --border: #d0d0d0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            margin-bottom: 30px;
+        }
+
+        .back-button:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .category-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .category-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 8px 0;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .link-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            background: var(--bg-secondary);
+        }
+
+        .link-icon {
+            font-size: 32px;
+            width: 60px;
+            height: 60px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .link-card:hover .link-icon {
+            background: var(--primary);
+            color: white;
+        }
+
+        .link-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .link-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .link-card:hover .link-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 18px;
+            transition: all 0.15s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--text-muted);
+            font-size: 32px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .links-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Notes
+        </a>
+
+        <div class="header">
+            <h1>Quiz Learning Resources</h1>
+            <p>Quick access to all your quiz-related learning materials and resources</p>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="addLinkBtn">
+                <i class="fas fa-plus"></i> Add Link
+            </button>
+            <button class="btn btn-secondary" id="refreshBtn">
+                <i class="fas fa-sync"></i> Refresh
+            </button>
+        </div>
+
+        <div id="linksContainer" class="links-container"></div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <h3>No Quiz Links Yet</h3>
+            <p>Add your first quiz learning resource to get started</p>
+        </div>
+    </div>
+
+    <!-- Add/Edit Link Modal -->
+    <div class="modal" id="linkFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="formTitle">Add Quiz Link</h3>
+                <button class="close-btn" id="closeFormBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="linkCategory">Category</label>
+                    <input type="text" id="linkCategory" placeholder="e.g., Learning, Practice, Resources...">
+                </div>
+                <div class="form-group">
+                    <label for="linkTitle">Title</label>
+                    <input type="text" id="linkTitle" placeholder="Link title...">
+                </div>
+                <div class="form-group">
+                    <label for="linkUrl">URL</label>
+                    <input type="url" id="linkUrl" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="linkIcon">Icon</label>
+                    <select id="linkIcon">
+                        <option value="fa-link">Link</option>
+                        <option value="fa-book">Book</option>
+                        <option value="fa-globe">Globe</option>
+                        <option value="fa-database">Database</option>
+                        <option value="fa-table">Table</option>
+                        <option value="fa-network-wired">Network</option>
+                        <option value="fa-rocket">Rocket</option>
+                        <option value="fa-flask">Flask</option>
+                        <option value="fa-code">Code</option>
+                        <option value="fa-graduation-cap">Graduation Cap</option>
+                        <option value="fa-lightbulb">Lightbulb</option>
+                        <option value="fa-star">Star</option>
+                        <option value="fa-heart">Heart</option>
+                        <option value="fa-file">File</option>
+                        <option value="fa-download">Download</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveLinkBtn">Save Link</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let quizLinks = [];
+        let editingLinkId = null;
+
+        // Load links from localStorage
+        function loadLinks() {
+            try {
+                const stored = localStorage.getItem('quizLinks');
+                if (stored) {
+                    quizLinks = JSON.parse(stored);
+                } else {
+                    // Initialize with default links
+                    quizLinks = [
+                        {
+                            id: Date.now() + 1,
+                            category: 'Learning',
+                            title: 'Tech Essentials Reviewer',
+                            url: 'https://connect.huaweicloud.com/intl/en-us/courses/learn/Learning/sp:cloudEdu_en?courseNo=C101692237687889160&courseType=1&ticket=ST-8985505-n3vBM6elGfdTDDkubaQRxPNY-sso',
+                            icon: 'fa-book'
+                        },
+                        {
+                            id: Date.now() + 2,
+                            category: 'Practice Labs',
+                            title: 'VPC Practice',
+                            url: 'https://lab.huaweicloud.com/intl/en-us/experiment-detail_1880',
+                            icon: 'fa-network-wired'
+                        },
+                        {
+                            id: Date.now() + 3,
+                            category: 'Practice Labs',
+                            title: 'Storage Practice',
+                            url: 'https://lab.huaweicloud.com/intl/en-us/experiment-detail_1844',
+                            icon: 'fa-database'
+                        },
+                        {
+                            id: Date.now() + 4,
+                            category: 'Practice Labs',
+                            title: 'Database Practice',
+                            url: 'https://lab.huaweicloud.com/intl/en-us/experiment-detail_1933',
+                            icon: 'fa-table'
+                        }
+                    ];
+                    saveLinks();
+                }
+                renderLinks();
+            } catch (error) {
+                console.error('Error loading links:', error);
+            }
+        }
+
+        // Save links to localStorage
+        function saveLinks() {
+            try {
+                localStorage.setItem('quizLinks', JSON.stringify(quizLinks));
+            } catch (error) {
+                console.error('Error saving links:', error);
+            }
+        }
+
+        // Render all links grouped by category
+        function renderLinks() {
+            const container = document.getElementById('linksContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (quizLinks.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            container.style.display = 'flex';
+            emptyState.style.display = 'none';
+
+            // Group links by category
+            const categories = {};
+            quizLinks.forEach(link => {
+                if (!categories[link.category]) {
+                    categories[link.category] = [];
+                }
+                categories[link.category].push(link);
+            });
+
+            // Sort categories
+            const sortedCategories = Object.keys(categories).sort();
+
+            container.innerHTML = sortedCategories.map(category => `
+                <div class="category-section">
+                    <div class="category-title">${escapeHtml(category)}</div>
+                    <div class="links-grid">
+                        ${categories[category].map(link => `
+                            <a href="${link.url}" target="_blank" class="link-card" title="${link.title}">
+                                <div class="link-actions">
+                                    <button class="action-btn" onclick="event.preventDefault(); event.stopPropagation(); editLink(${link.id})" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="event.preventDefault(); event.stopPropagation(); deleteLink(${link.id})" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="link-icon">
+                                    <i class="fas ${link.icon}"></i>
+                                </div>
+                                <div class="link-title">${escapeHtml(link.title)}</div>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Open add link form
+        function openAddForm() {
+            editingLinkId = null;
+            document.getElementById('formTitle').textContent = 'Add Quiz Link';
+            document.getElementById('linkCategory').value = '';
+            document.getElementById('linkTitle').value = '';
+            document.getElementById('linkUrl').value = '';
+            document.getElementById('linkIcon').value = 'fa-link';
+            document.getElementById('linkFormModal').classList.add('active');
+            document.getElementById('linkCategory').focus();
+        }
+
+        // Edit link
+        function editLink(linkId) {
+            const link = quizLinks.find(l => l.id === linkId);
+            if (!link) return;
+
+            editingLinkId = linkId;
+            document.getElementById('formTitle').textContent = 'Edit Quiz Link';
+            document.getElementById('linkCategory').value = link.category;
+            document.getElementById('linkTitle').value = link.title;
+            document.getElementById('linkUrl').value = link.url;
+            document.getElementById('linkIcon').value = link.icon;
+            document.getElementById('linkFormModal').classList.add('active');
+            document.getElementById('linkCategory').focus();
+        }
+
+        // Delete link
+        function deleteLink(linkId) {
+            if (confirm('Are you sure you want to delete this link?')) {
+                quizLinks = quizLinks.filter(l => l.id !== linkId);
+                saveLinks();
+                renderLinks();
+            }
+        }
+
+        // Save link
+        function saveLink() {
+            const category = document.getElementById('linkCategory').value.trim();
+            const title = document.getElementById('linkTitle').value.trim();
+            const url = document.getElementById('linkUrl').value.trim();
+            const icon = document.getElementById('linkIcon').value || 'fa-link';
+
+            if (!category || !title || !url) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('URL must start with http:// or https://');
+                return;
+            }
+
+            if (editingLinkId) {
+                const link = quizLinks.find(l => l.id === editingLinkId);
+                if (link) {
+                    link.category = category;
+                    link.title = title;
+                    link.url = url;
+                    link.icon = icon;
+                }
+            } else {
+                quizLinks.push({
+                    id: Date.now(),
+                    category: category,
+                    title: title,
+                    url: url,
+                    icon: icon
+                });
+            }
+
+            saveLinks();
+            closeForm();
+            renderLinks();
+        }
+
+        // Close form
+        function closeForm() {
+            document.getElementById('linkFormModal').classList.remove('active');
+            editingLinkId = null;
+        }
+
+        // Event listeners
+        document.getElementById('addLinkBtn').addEventListener('click', openAddForm);
+        document.getElementById('saveLinkBtn').addEventListener('click', saveLink);
+        document.getElementById('cancelBtn').addEventListener('click', closeForm);
+        document.getElementById('closeFormBtn').addEventListener('click', closeForm);
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            loadLinks();
+            alert('Links refreshed!');
+        });
+
+        // Close modal on background click
+        document.getElementById('linkFormModal').addEventListener('click', (e) => {
+            if (e.target.id === 'linkFormModal') {
+                closeForm();
+            }
+        });
+
+        // Enter key to save
+        document.getElementById('linkUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveLink();
+            }
+        });
+
+        // Initialize
+        loadLinks();
+    </script>
+</body>
+</html>

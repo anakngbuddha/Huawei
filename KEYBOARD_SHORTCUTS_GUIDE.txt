@@ -1,0 +1,169 @@
+================================================================================
+                    QUIZ KEYBOARD SHORTCUTS GUIDE
+================================================================================
+
+QUICK REFERENCE
+================================================================================
+
+NAVIGATION
+──────────────────────────────────────────────────────────────────────────────
+  ← Arrow Left  or  A    →  Go to Previous Question
+  → Arrow Right or  D    →  Go to Next Question (after answering)
+  Esc                    →  Return to Quiz Selection
+
+ACTIONS
+──────────────────────────────────────────────────────────────────────────────
+  Enter                  →  Submit Answer or Proceed to Next Question
+
+DETAILED USAGE
+================================================================================
+
+BEFORE ANSWERING A QUESTION
+────────────────────────────────────────────────────────────────────────────
+1. Read the question carefully
+2. Click or use Tab to select an answer
+3. Press Enter to submit
+   OR
+   Click the "Submit Answer" button
+
+AFTER SUBMITTING AN ANSWER
+────────────────────────────────────────────────────────────────────────────
+1. See if your answer is correct
+2. Read the explanation
+3. Press → (Right Arrow) or D to go to next question
+   OR
+   Click the "Next" button
+
+GOING BACK TO PREVIOUS QUESTIONS
+────────────────────────────────────────────────────────────────────────────
+1. Press ← (Left Arrow) or A to go back
+   OR
+   Click the "Previous" button
+2. Your previous answer is still selected
+3. You can change it if you want
+4. Submit the new answer
+
+RETURNING TO QUIZ SELECTION
+────────────────────────────────────────────────────────────────────────────
+1. Press Esc at any time during the quiz
+   OR
+   Click the "Back" button
+2. You'll return to the quiz selection screen
+3. Your progress will be lost (quiz restarts if you select again)
+
+COMPLETE WORKFLOW EXAMPLE
+================================================================================
+
+Step 1: Select a Quiz
+  → Click "Quiz 1" or "Quiz 2" button
+
+Step 2: Answer Question 1
+  → Read the question
+  → Click an answer option
+  → Press Enter (or click Submit Answer)
+  → See feedback and explanation
+
+Step 3: Go to Question 2
+  → Press → (Right Arrow) or D
+  → OR click "Next" button
+
+Step 4: Go Back to Question 1
+  → Press ← (Left Arrow) or A
+  → Your previous answer is still there
+  → Press → to go forward again
+
+Step 5: Continue Through All Questions
+  → Use keyboard shortcuts to navigate quickly
+  → Press Enter to submit each answer
+  → Read explanations to learn
+
+Step 6: Complete the Quiz
+  → On the last question, press Enter
+  → Click "Finish" or press →
+  → See your results
+
+Step 7: View Results
+  → See your score (e.g., 24/30)
+  → See your percentage (e.g., 80%)
+  → See correct/incorrect count
+  → See time taken
+
+Step 8: Retake or Go Back
+  → Press Esc or click "Back to Selection" to choose another quiz
+  → Click "Retake Quiz" to try the same quiz again
+
+TIPS FOR FASTER NAVIGATION
+================================================================================
+
+✓ Use Arrow Keys instead of mouse for faster navigation
+✓ Press Enter to submit quickly
+✓ Use A and D keys as alternatives to Arrow keys
+✓ Press Esc to quickly return to selection
+✓ Your answers are saved when you navigate back and forth
+
+KEYBOARD SHORTCUTS SUMMARY TABLE
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ KEY(S)                  │ ACTION                                        │
+├─────────────────────────────────────────────────────────────────────────┤
+│ ← or A                  │ Go to Previous Question                       │
+│ → or D                  │ Go to Next Question (after answering)         │
+│ Enter                   │ Submit Answer or Proceed                      │
+│ Esc                     │ Return to Quiz Selection                      │
+└─────────────────────────────────────────────────────────────────────────┘
+
+MOUSE ALTERNATIVES
+================================================================================
+
+If you prefer using the mouse:
+
+  Previous Button  →  Click "Previous" button (← or A shown on button)
+  Next Button      →  Click "Next" button (→ shown on button)
+  Submit Button    →  Click "Submit Answer" button (Enter shown on button)
+  Back Button      →  Click "Back" button or press Esc
+
+TROUBLESHOOTING
+================================================================================
+
+Q: Keyboard shortcuts aren't working
+A: Make sure the quiz window is active (click on it first)
+
+Q: Arrow keys are scrolling the page instead of navigating
+A: The quiz should prevent this, but try clicking in the quiz area first
+
+Q: Enter key isn't submitting my answer
+A: Make sure you've selected an answer first
+
+Q: Can't go back to previous questions
+A: You can only go back if you're not on the first question
+
+Q: Esc key isn't working
+A: Try clicking the "Back" button instead
+
+BROWSER COMPATIBILITY
+================================================================================
+
+✓ Chrome/Edge     - Full support
+✓ Firefox         - Full support
+✓ Safari          - Full support
+✓ Mobile Browsers - Partial support (use buttons instead)
+
+MOBILE USERS
+================================================================================
+
+On mobile devices, keyboard shortcuts may not work as well.
+Use the on-screen buttons instead:
+  - Tap "Previous" button to go back
+  - Tap "Next" button to go forward
+  - Tap "Submit Answer" to submit
+  - Tap "Back" button to return
+
+================================================================================
+                        ENJOY THE QUIZ!
+================================================================================
+
+These keyboard shortcuts make the quiz faster and easier to use.
+Master them for the best experience!
+
+For more information, see QUIZ_ENHANCEMENTS_COMPLETE.md

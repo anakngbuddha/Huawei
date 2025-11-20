@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes - Professional Note Taking</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="quiz-styles.css">
     <style>
         * {
             margin: 0;
@@ -705,7 +706,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 12px 16px;
             border: 1px solid var(--border);
@@ -718,10 +720,21 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
         }
 
         .form-group textarea {
@@ -866,6 +879,162 @@
             flex-wrap: wrap;
         }
 
+        /* Task Type Badge */
+        .task-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        /* Task Filters */
+        .task-filters-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .task-filters-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 8px;
+        }
+
+        .task-filter-btn {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .task-filter-btn:hover {
+            border-color: var(--primary);
+            background: var(--bg-primary);
+            color: var(--primary);
+        }
+
+        .task-filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .task-filter-reset {
+            margin-left: auto;
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .task-filter-reset:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Task Input Section Improvements */
+        .task-input-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .task-input-wrapper {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .task-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .task-input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .task-input-group input,
+        .task-input-group select {
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: all 0.2s ease;
+        }
+
+        .task-input-group input:focus,
+        .task-input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .task-input-group select {
+            cursor: pointer;
+        }
+
+        .task-add-btn {
+            padding: 12px 24px;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            align-self: flex-end;
+        }
+
+        .task-add-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
         .modal-footer {
             padding: 20px 24px;
             border-top: 1px solid var(--border);
@@ -905,6 +1074,104 @@
 
         .btn-primary:hover {
             background: var(--primary-dark);
+        }
+
+        /* Quick Links Modal */
+        .quick-links-modal {
+            max-width: 900px;
+        }
+
+        .quick-links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .quick-links-category {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quick-links-category-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 8px 0;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .quick-link-btn {
+            padding: 16px 12px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-link-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .quick-link-btn i {
+            font-size: 20px;
+        }
+
+        .quick-link-actions {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            display: flex;
+            gap: 2px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .quick-link-btn:hover .quick-link-actions {
+            opacity: 1;
+        }
+
+        .quick-link-action-btn {
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .quick-link-action-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
         }
 
         .view-modal .modal-content {
@@ -1164,7 +1431,7 @@
         .quiz-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: #000;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1172,6 +1439,7 @@
             margin: 0 auto 20px;
             color: white;
             font-size: 36px;
+            border: 2px solid #fff;
         }
 
         .quiz-main-title {
@@ -1195,7 +1463,7 @@
 
         .quiz-module-card {
             background: var(--bg-primary);
-            border: 2px solid var(--border);
+            border: 2px solid #000;
             border-radius: 16px;
             padding: 30px;
             text-align: center;
@@ -1204,20 +1472,22 @@
         }
 
         .quiz-module-card:hover {
-            border-color: var(--primary);
+            border-color: #000;
             transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: #f5f5f5;
         }
 
         .quiz-all-modules {
             grid-column: 1 / -1;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: #000;
             color: white;
-            border-color: var(--primary);
+            border-color: #000;
         }
 
         .quiz-all-modules:hover {
             transform: translateY(-4px) scale(1.02);
+            background: #1a1a1a;
         }
 
         .quiz-all-modules h3,
@@ -1228,14 +1498,14 @@
         .module-icon {
             width: 60px;
             height: 60px;
-            background: var(--bg-secondary);
+            background: #f5f5f5;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
             font-size: 28px;
-            color: var(--primary);
+            color: #000;
         }
 
         .quiz-all-modules .module-icon {
@@ -1259,16 +1529,84 @@
         .module-questions {
             display: inline-block;
             padding: 6px 14px;
-            background: var(--bg-tertiary);
+            background: #f5f5f5;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: #000;
         }
 
         .quiz-all-modules .module-questions {
             background: rgba(255, 255, 255, 0.2);
             color: white;
+        }
+
+        /* Quiz Selection Screen */
+        .quiz-selection-screen {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .quiz-selection-header {
+            margin-bottom: 60px;
+        }
+
+        .quiz-selection-header h1 {
+            font-size: 40px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        .quiz-selection-header p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .quiz-buttons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .quiz-selection-btn {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 16px;
+            padding: 40px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quiz-selection-btn:hover {
+            background: #000;
+            color: #fff;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .quiz-selection-btn h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: inherit;
+        }
+
+        .quiz-selection-btn .quiz-count {
+            font-size: 16px;
+            color: inherit;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .quiz-selection-btn .quiz-btn-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
         }
 
         .quiz-stats-section {
@@ -1793,6 +2131,14 @@
                     <i class="fas fa-graduation-cap"></i>
                     <span>Quiz</span>
                 </button>
+                <button class="nav-button" id="quickLinksBtn">
+                    <i class="fas fa-link"></i>
+                    <span>Quick Links</span>
+                </button>
+                <a href="quiz-links.html" class="nav-button" style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Quiz Links</span>
+                </a>
                 <div id="customTabsContainer"></div>
                 <button class="add-tab-btn" id="addTabBtn">
                     <i class="fas fa-plus"></i>
@@ -1852,19 +2198,50 @@
                         </div>
                         <div class="task-input-section">
                             <div class="task-input-wrapper">
-                                <input type="text" class="task-input" id="taskInput" placeholder="Add a new task...">
-                                <select class="task-priority-select" id="taskPriority">
-                                    <option value="none">No Priority</option>
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
-                                <input type="date" class="timeline-input" id="taskTimeline" title="Optional due date">
+                                <div class="task-input-group" style="flex: 2; min-width: 250px;">
+                                    <label for="taskInput">Task Description</label>
+                                    <input type="text" class="task-input" id="taskInput" placeholder="Add a new task...">
+                                </div>
+                                <div class="task-input-group">
+                                    <label for="taskType">Type</label>
+                                    <select id="taskType">
+                                        <option value="none">Select Type</option>
+                                        <option value="written">Written</option>
+                                        <option value="exercise">Exercise</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="task-input-group">
+                                    <label for="taskPriority">Priority</label>
+                                    <select class="task-priority-select" id="taskPriority">
+                                        <option value="none">No Priority</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+                                <div class="task-input-group">
+                                    <label for="taskTimeline">Due Date</label>
+                                    <input type="date" class="timeline-input" id="taskTimeline" title="Optional due date">
+                                </div>
                                 <button class="task-add-btn" id="addTaskBtn">
                                     <i class="fas fa-plus"></i>
                                     <span>Add</span>
                                 </button>
                             </div>
+                        </div>
+                        <div class="task-filters-section">
+                            <span class="task-filters-label">Filter:</span>
+                            <button class="task-filter-btn active" data-filter="all">All</button>
+                            <button class="task-filter-btn" data-filter="todo">To Do</button>
+                            <button class="task-filter-btn" data-filter="done">Done</button>
+                            <button class="task-filter-btn" data-filter="close-deadline">Close to Deadline</button>
+                            <button class="task-filter-btn" data-filter="no-deadline">No Deadline</button>
+                            <button class="task-filter-btn" data-filter="overdue">Past Due</button>
+                            <button class="task-filter-btn" data-filter="written">Written</button>
+                            <button class="task-filter-btn" data-filter="exercise">Exercise</button>
+                            <button class="task-filter-btn" data-filter="other">Other</button>
+                            <button class="task-filter-reset" id="resetFiltersBtn">Reset</button>
                         </div>
                         <div class="tasks-list" id="tasksList"></div>
                     </div>
@@ -1992,10 +2369,90 @@
         </div>
     </div>
 
-    <!-- Save Status -->
-    <div class="save-status">
-        <i class="fas fa-check-circle"></i>
-        <span>Auto-saved</span>
+    <!-- Quick Links Modal -->
+    <div class="modal" id="quickLinksModal">
+        <div class="modal-content quick-links-modal">
+            <div class="modal-header">
+                <h3>Quick Links</h3>
+                <button class="close-btn" id="closeQuickLinksModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="quickLinksContainer"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="addQuickLinkBtn">
+                    <i class="fas fa-plus"></i> Add Link
+                </button>
+                <button class="btn btn-primary" id="closeQuickLinksBtn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Quick Link Modal -->
+    <div class="modal" id="quickLinkFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="quickLinkFormTitle">Add Quick Link</h3>
+                <button class="close-btn" id="closeQuickLinkForm">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="quickLinkCategory">Category</label>
+                    <input type="text" id="quickLinkCategory" placeholder="e.g., Learning, Tools, Resources...">
+                </div>
+                <div class="form-group">
+                    <label for="quickLinkTitle">Title</label>
+                    <input type="text" id="quickLinkTitle" placeholder="Link title...">
+                </div>
+                <div class="form-group">
+                    <label for="quickLinkUrl">URL</label>
+                    <input type="url" id="quickLinkUrl" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="quickLinkIcon">Icon</label>
+                    <select id="quickLinkIcon">
+                        <option value="fa-link">Link</option>
+                        <option value="fa-book">Book</option>
+                        <option value="fa-globe">Globe</option>
+                        <option value="fa-database">Database</option>
+                        <option value="fa-table">Table</option>
+                        <option value="fa-network-wired">Network</option>
+                        <option value="fa-home">Home</option>
+                        <option value="fa-rocket">Rocket</option>
+                        <option value="fa-flask">Flask</option>
+                        <option value="fa-code">Code</option>
+                        <option value="fa-cog">Cog</option>
+                        <option value="fa-briefcase">Briefcase</option>
+                        <option value="fa-chart-bar">Chart</option>
+                        <option value="fa-folder">Folder</option>
+                        <option value="fa-file">File</option>
+                        <option value="fa-download">Download</option>
+                        <option value="fa-upload">Upload</option>
+                        <option value="fa-cloud">Cloud</option>
+                        <option value="fa-server">Server</option>
+                        <option value="fa-lock">Lock</option>
+                        <option value="fa-key">Key</option>
+                        <option value="fa-user">User</option>
+                        <option value="fa-users">Users</option>
+                        <option value="fa-graduation-cap">Graduation Cap</option>
+                        <option value="fa-lightbulb">Lightbulb</option>
+                        <option value="fa-star">Star</option>
+                        <option value="fa-heart">Heart</option>
+                        <option value="fa-bell">Bell</option>
+                        <option value="fa-envelope">Envelope</option>
+                        <option value="fa-phone">Phone</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelQuickLinkForm">Cancel</button>
+                <button class="btn btn-primary" id="saveQuickLink" onclick="saveQuickLink()">Save Link</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -2010,6 +2467,7 @@
         let pinnedTabs = [];
         let currentTab = 'tasks';
         let editingId = null;
+        let activeFilter = 'all';
 
         const tabIcons = {
             tasks: 'fa-tasks',
@@ -2020,6 +2478,66 @@
             quiz: 'fa-graduation-cap'
         };
 
+        let quickLinks = [
+            {
+                id: Date.now() + 1,
+                category: 'Learning',
+                title: 'Tech Essentials Reviewer',
+                url: 'https://connect.huaweicloud.com/intl/en-us/courses/learn/Learning/sp:cloudEdu_en?courseNo=C101692237687889160&courseType=1&ticket=ST-8985505-n3vBM6elGfdTDDkubaQRxPNY-sso',
+                icon: 'fa-book'
+            },
+            {
+                id: Date.now() + 2,
+                category: 'Tools',
+                title: 'PWI',
+                url: 'https://pwi.wordtext.ph/pwi_live/logon.aspx?ReturnUrl=%2fpwi_live%2fOBRequests.aspx%3findex%3d0%26adminIndex%3d1%26menuIndex%3d2&index=0&adminIndex=1&menuIndex=2',
+                icon: 'fa-globe'
+            },
+            {
+                id: Date.now() + 3,
+                category: 'Practice Labs',
+                title: 'VPC Practice',
+                url: 'https://lab.huaweicloud.com/intl/en-us/experiment-detail_1880',
+                icon: 'fa-network-wired'
+            },
+            {
+                id: Date.now() + 4,
+                category: 'Practice Labs',
+                title: 'Storage Practice',
+                url: 'https://lab.huaweicloud.com/intl/en-us/experiment-detail_1844?ticket=ST-839257-XobHTL1VHEyWnJHPhceIu06Z-sso&locale=en-us',
+                icon: 'fa-database'
+            },
+            {
+                id: Date.now() + 5,
+                category: 'Practice Labs',
+                title: 'Database Practice',
+                url: 'https://lab.huaweicloud.com/intl/en-us/experiment-detail_1933',
+                icon: 'fa-table'
+            },
+            {
+                id: Date.now() + 6,
+                category: 'Forms',
+                title: 'Work From Home Form',
+                url: 'https://forms.office.com/pages/responsepage.aspx?id=k0KEGwpz4UaOpYIy6UxrlLWV44Cp-uZFpDCDHt9-8P9UNDg1UUYxMFlCSUg5QjQ4VTBPRFMzSlo2Si4u&route=shorturl',
+                icon: 'fa-home'
+            },
+            {
+                id: Date.now() + 7,
+                category: 'Practice Labs',
+                title: 'Deploying Web Practice',
+                url: 'https://lab.huaweicloud.com/intl/en-us/experiment-detail_1765',
+                icon: 'fa-rocket'
+            },
+            {
+                id: Date.now() + 8,
+                category: 'Resources',
+                title: 'Lab Experiments',
+                url: 'https://lab.huaweicloud.com/intl/en-us/experiment-list',
+                icon: 'fa-flask'
+            }
+        ];
+        let editingQuickLinkId = null;
+
         // Load data from storage
         async function loadData() {
             try {
@@ -2027,6 +2545,12 @@
                 const tasksData = localStorage.getItem('tasks');
                 if (tasksData) {
                     tasks = JSON.parse(tasksData);
+                }
+                
+                // Load quick links
+                const quickLinksData = localStorage.getItem('quickLinks');
+                if (quickLinksData) {
+                    quickLinks = JSON.parse(quickLinksData);
                 }
                 
                 // Load custom tabs
@@ -2091,6 +2615,7 @@
                     localStorage.setItem(`notes-${tab}`, JSON.stringify(notes[tab]));
                 }
                 localStorage.setItem('tasks', JSON.stringify(tasks));
+                localStorage.setItem('quickLinks', JSON.stringify(quickLinks));
                 localStorage.setItem('customTabs', JSON.stringify(customTabs));
                 localStorage.setItem('pinnedTabs', JSON.stringify(pinnedTabs));
             } catch (error) {
@@ -2148,6 +2673,13 @@
                 document.getElementById('addSectionBtn').style.display = 'flex';
             }
             
+            // Initialize quiz manager when quiz tab is clicked
+            if (tab === 'quiz') {
+                if (typeof initializeQuizManager === 'function') {
+                    initializeQuizManager();
+                }
+            }
+            
             // Show/hide header tab actions for custom tabs
             const headerTabActions = document.getElementById('headerTabActions');
             const headerPinBtn = document.getElementById('headerPinBtn');
@@ -2177,6 +2709,173 @@
         document.getElementById('cancelModal').addEventListener('click', closeModal);
         document.getElementById('closeViewModal').addEventListener('click', closeViewModal);
         document.getElementById('closeViewBtn').addEventListener('click', closeViewModal);
+
+        // Quick Links
+        document.getElementById('quickLinksBtn').addEventListener('click', openQuickLinksModal);
+        document.getElementById('closeQuickLinksModal').addEventListener('click', closeQuickLinksModal);
+        document.getElementById('closeQuickLinksBtn').addEventListener('click', closeQuickLinksModal);
+        document.getElementById('addQuickLinkBtn').addEventListener('click', openQuickLinkForm);
+        document.getElementById('closeQuickLinkForm').addEventListener('click', closeQuickLinkForm);
+        document.getElementById('cancelQuickLinkForm').addEventListener('click', closeQuickLinkForm);
+        document.getElementById('saveQuickLink').addEventListener('click', saveQuickLink);
+        
+        document.getElementById('quickLinksModal').addEventListener('click', (e) => {
+            if (e.target.id === 'quickLinksModal') {
+                closeQuickLinksModal();
+            }
+        });
+
+        document.getElementById('quickLinkFormModal').addEventListener('click', (e) => {
+            if (e.target.id === 'quickLinkFormModal') {
+                closeQuickLinkForm();
+            }
+        });
+
+        function renderQuickLinks() {
+            const container = document.getElementById('quickLinksContainer');
+            
+            // Group links by category
+            const categories = {};
+            quickLinks.forEach(link => {
+                if (!categories[link.category]) {
+                    categories[link.category] = [];
+                }
+                categories[link.category].push(link);
+            });
+            
+            // Sort categories
+            const sortedCategories = Object.keys(categories).sort();
+            
+            container.innerHTML = `
+                <div class="quick-links-container">
+                    ${sortedCategories.map(category => `
+                        <div class="quick-links-category">
+                            <div class="quick-links-category-title">${escapeHtml(category)}</div>
+                            <div class="quick-links-grid">
+                                ${categories[category].map(link => `
+                                    <a href="${link.url}" target="_blank" class="quick-link-btn" title="${link.title}">
+                                        <div class="quick-link-actions">
+                                            <button class="quick-link-action-btn" onclick="event.preventDefault(); event.stopPropagation(); editQuickLink(${link.id})" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="quick-link-action-btn" onclick="event.preventDefault(); event.stopPropagation(); deleteQuickLink(${link.id})" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        <i class="fas ${link.icon}"></i>
+                                        <span>${escapeHtml(link.title)}</span>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function openQuickLinksModal() {
+            renderQuickLinks();
+            document.getElementById('quickLinksModal').classList.add('active');
+        }
+
+        function closeQuickLinksModal() {
+            document.getElementById('quickLinksModal').classList.remove('active');
+        }
+
+        function openQuickLinkForm(linkId = null) {
+            editingQuickLinkId = linkId;
+            const formTitle = document.getElementById('quickLinkFormTitle');
+            const categoryInput = document.getElementById('quickLinkCategory');
+            const titleInput = document.getElementById('quickLinkTitle');
+            const urlInput = document.getElementById('quickLinkUrl');
+            const iconInput = document.getElementById('quickLinkIcon');
+            
+            if (linkId) {
+                const link = quickLinks.find(l => l.id === linkId);
+                if (link) {
+                    formTitle.textContent = 'Edit Quick Link';
+                    categoryInput.value = link.category;
+                    titleInput.value = link.title;
+                    urlInput.value = link.url;
+                    iconInput.value = link.icon;
+                }
+            } else {
+                formTitle.textContent = 'Add Quick Link';
+                categoryInput.value = '';
+                titleInput.value = '';
+                urlInput.value = '';
+                iconInput.value = 'fa-link';
+            }
+            
+            document.getElementById('quickLinkFormModal').classList.add('active');
+            categoryInput.focus();
+        }
+
+        function closeQuickLinkForm() {
+            document.getElementById('quickLinkFormModal').classList.remove('active');
+            editingQuickLinkId = null;
+        }
+
+        function saveQuickLink() {
+            const category = document.getElementById('quickLinkCategory').value.trim();
+            const title = document.getElementById('quickLinkTitle').value.trim();
+            const url = document.getElementById('quickLinkUrl').value.trim();
+            const icon = document.getElementById('quickLinkIcon').value || 'fa-link';
+            
+            console.log('Save Quick Link called:', { category, title, url, icon });
+            
+            if (!category || !title || !url) {
+                alert('Please fill in all fields');
+                console.warn('Missing fields:', { category, title, url });
+                return;
+            }
+            
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('URL must start with http:// or https://');
+                return;
+            }
+            
+            if (editingQuickLinkId) {
+                const link = quickLinks.find(l => l.id === editingQuickLinkId);
+                if (link) {
+                    link.category = category;
+                    link.title = title;
+                    link.url = url;
+                    link.icon = icon;
+                    console.log('Link updated:', link);
+                }
+            } else {
+                const newLink = {
+                    id: Date.now(),
+                    category: category,
+                    title: title,
+                    url: url,
+                    icon: icon
+                };
+                quickLinks.push(newLink);
+                console.log('New link added:', newLink);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('quickLinks', JSON.stringify(quickLinks));
+            console.log('Links saved to localStorage:', quickLinks);
+            
+            closeQuickLinkForm();
+            renderQuickLinks();
+            alert('Link saved successfully!');
+        }
+
+        function editQuickLink(linkId) {
+            openQuickLinkForm(linkId);
+        }
+
+        function deleteQuickLink(linkId) {
+            if (confirm('Are you sure you want to delete this link?')) {
+                quickLinks = quickLinks.filter(l => l.id !== linkId);
+                localStorage.setItem('quickLinks', JSON.stringify(quickLinks));
+                renderQuickLinks();
+            }
+        }
 
         function openModal() {
             editingId = null;
@@ -2374,6 +3073,59 @@
         });
 
         // Task Management Functions
+        function filterTasks() {
+            let filtered = [...tasks];
+            
+            if (activeFilter === 'all') {
+                return filtered;
+            }
+            
+            if (activeFilter === 'todo') {
+                return filtered.filter(t => !t.completed);
+            }
+            
+            if (activeFilter === 'done') {
+                return filtered.filter(t => t.completed);
+            }
+            
+            if (activeFilter === 'overdue') {
+                return filtered.filter(t => {
+                    if (!t.dueDate || t.completed) return false;
+                    const due = new Date(t.dueDate);
+                    const now = new Date();
+                    return due < now;
+                });
+            }
+            
+            if (activeFilter === 'close-deadline') {
+                return filtered.filter(t => {
+                    if (!t.dueDate || t.completed) return false;
+                    const due = new Date(t.dueDate);
+                    const now = new Date();
+                    const diffDays = Math.ceil((due - now) / (1000 * 60 * 60 * 24));
+                    return diffDays > 0 && diffDays <= 3;
+                });
+            }
+            
+            if (activeFilter === 'no-deadline') {
+                return filtered.filter(t => !t.dueDate && !t.completed);
+            }
+            
+            if (activeFilter === 'written') {
+                return filtered.filter(t => t.type === 'written');
+            }
+            
+            if (activeFilter === 'exercise') {
+                return filtered.filter(t => t.type === 'exercise');
+            }
+            
+            if (activeFilter === 'other') {
+                return filtered.filter(t => t.type === 'other');
+            }
+            
+            return filtered;
+        }
+        
         function renderTasks() {
             const tasksList = document.getElementById('tasksList');
             const totalTasksEl = document.getElementById('totalTasks');
@@ -2387,20 +3139,22 @@
             activeTasksEl.textContent = activeCount;
             completedTasksEl.textContent = completedCount;
             
-            if (tasks.length === 0) {
+            const filteredTasks = filterTasks();
+            
+            if (filteredTasks.length === 0) {
                 tasksList.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">
                             <i class="fas fa-tasks"></i>
                         </div>
-                        <h3>No tasks yet</h3>
-                        <p>Add your first task to get started</p>
+                        <h3>${activeFilter === 'all' ? 'No tasks yet' : 'No tasks match this filter'}</h3>
+                        <p>${activeFilter === 'all' ? 'Add your first task to get started' : 'Try adjusting your filters'}</p>
                     </div>
                 `;
                 return;
             }
             
-            const sortedTasks = [...tasks].sort((a, b) => {
+            const sortedTasks = [...filteredTasks].sort((a, b) => {
                 const priorityOrder = { high: 0, medium: 1, low: 2, none: 3 };
                 return priorityOrder[a.priority || 'none'] - priorityOrder[b.priority || 'none'];
             });
@@ -2431,6 +3185,7 @@
                 }
                 
                 const priorityLabel = task.priority && task.priority !== 'none' ? task.priority : '';
+                const typeLabel = task.type && task.type !== 'none' ? task.type : '';
                 
                 return `
                     <div class="task-item ${task.completed ? 'completed' : ''}">
@@ -2440,6 +3195,7 @@
                         <div style="flex: 1;">
                             <div class="task-text">${escapeHtml(task.text)}</div>
                             <div class="task-meta">
+                                ${typeLabel ? `<span class="task-type-badge"><i class="fas fa-tag"></i> ${typeLabel}</span>` : ''}
                                 ${priorityLabel ? `<span class="priority-badge priority-${task.priority}">${priorityLabel}</span>` : ''}
                                 ${timelineText ? `<span class="task-timeline ${timelineClass}"><i class="fas fa-clock"></i> ${timelineText}</span>` : ''}
                             </div>
@@ -2457,6 +3213,7 @@
             const text = input.value.trim();
             const priority = document.getElementById('taskPriority').value;
             const dueDate = document.getElementById('taskTimeline').value;
+            const type = document.getElementById('taskType').value;
             
             if (!text) return;
             
@@ -2465,6 +3222,7 @@
                 text: text,
                 completed: false,
                 priority: priority,
+                type: type,
                 dueDate: dueDate || null,
                 createdAt: new Date().toISOString()
             };
@@ -2472,6 +3230,7 @@
             tasks.push(newTask);
             input.value = '';
             document.getElementById('taskPriority').value = 'none';
+            document.getElementById('taskType').value = 'none';
             document.getElementById('taskTimeline').value = '';
             saveData();
             renderTasks();
@@ -2771,6 +3530,23 @@
             }
         });
         
+        // Task Filter Event Listeners
+        document.querySelectorAll('.task-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.task-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                renderTasks();
+            });
+        });
+        
+        document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+            document.querySelectorAll('.task-filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
+            activeFilter = 'all';
+            renderTasks();
+        });
+        
         document.getElementById('addTabBtn').addEventListener('click', addNewTab);
         
         // Header tab action button event listeners
@@ -2813,10 +3589,10 @@
         loadData();
     </script>
     
+    <!-- Quiz Styles -->
+    <link rel="stylesheet" href="quiz-styles.css">
+    
     <!-- Quiz Scripts -->
-    <script src="quiz.js"></script>
-    <script src="quiz-questions.js"></script>
-    <script src="scenario-questions.js"></script>
-    <script src="scenario-questions2.js"></script>
+    <script src="quiz-manager.js"></script>
 </body>
 </html>
